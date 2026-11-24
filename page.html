@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>THE WIRE — Monday 23 November 2026</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html,body { width:1024px; height:1024px; overflow:hidden; background:#0A0C10; }
+  body { font-family:'Liberation Sans', Arial, sans-serif; color:#E9E6DC; padding:16px 26px 8px;
+         display:flex; flex-direction:column; gap:5px; }
+  body > * { flex-shrink:0; }
+  .mono { font-family:'DejaVu Sans Mono', monospace; text-transform:uppercase; letter-spacing:.08em; }
+  .chk { overflow:hidden; }
+
+  /* ticker */
+  .ticker { display:flex; justify-content:space-between; align-items:center; font-size:10px; font-weight:700;
+            color:#9BA1AD; border-bottom:1px solid #2A2F3A; padding-bottom:6px; }
+  .ticker .dot { color:#E5484D; }
+  .ticker .r { color:#E9E6DC; }
+
+  /* masthead */
+  .masthead { text-align:left; }
+  .date { font-family:'Playfair Display', Georgia, serif; font-weight:900; font-size:56px; line-height:1.02;
+          color:#E9E6DC; white-space:nowrap; }
+  .date .amp { color:#F5B544; }
+  .rule { height:3px; background:#F5B544; margin:5px 0 4px; }
+  .strap { font-size:11.5px; font-weight:700; color:#F5B544; white-space:nowrap; }
+  .brandrow { display:flex; justify-content:space-between; align-items:baseline; }
+  .brand { font-size:10px; font-weight:700; color:#9BA1AD; }
+  .brand b { color:#E5484D; }
+
+  /* alert strip */
+  .alerts { display:flex; gap:8px; }
+  .alert { flex:1; background:#2A1215; border:1px solid #E5484D; color:#F2C1C3; font-size:9.5px; font-weight:700;
+           padding:5px 8px; white-space:nowrap; text-align:center; }
+  .alert b { color:#FFFFFF; }
+
+  /* leads */
+  .leads { display:flex; gap:12px; }
+  .lead1 { width:600px; background:#12151C; border:1px solid #2A2F3A; padding:9px 12px 8px; }
+  .lead2col { flex:1; display:flex; flex-direction:column; gap:8px; }
+  .leadsmall { flex:1; background:#12151C; border:1px solid #2A2F3A; padding:8px 11px 7px; }
+  .kick { font-size:9px; font-weight:700; color:#E5484D; }
+  .kick .n { background:#E5484D; color:#fff; padding:1px 5px; margin-right:6px; }
+  .kick.amber { color:#F5B544; } .kick.amber .n { background:#F5B544; color:#0A0C10; }
+  .h1 { font-size:23.5px; font-weight:800; line-height:1.14; margin:4px 0 4px; }
+  .h2 { font-size:15.5px; font-weight:800; line-height:1.16; margin:4px 0 4px; }
+  .deck { font-size:11px; font-weight:600; line-height:1.26; color:#C9CBC9; }
+  .deck2 { font-size:10.5px; font-weight:600; line-height:1.26; color:#C9CBC9; }
+  .tag { font-size:8.5px; font-weight:700; color:#3FB27F; margin-top:4px; }
+  .tag.rep { color:#F5B544; }
+  .art1 { margin:5px 0 1px; }
+  .artstrip { margin:4px 0 1px; }
+
+  /* markets */
+  .markets { background:#12151C; border:1px solid #2A2F3A; padding:7px 12px 7px; }
+  .mk-head { display:flex; justify-content:space-between; align-items:baseline; }
+  .mk-title { font-size:14.5px; font-weight:800; }
+  .mk-title span { color:#E5484D; }
+  .mk-note { font-size:9px; font-weight:700; color:#9BA1AD; }
+  .mk-table { display:flex; gap:0; margin-top:5px; border-top:1px solid #2A2F3A; padding-top:5px; }
+  .mk { flex:1; text-align:left; }
+  .mk .sym { font-size:9px; font-weight:700; color:#9BA1AD; }
+  .mk .val { font-family:'DejaVu Sans Mono', monospace; font-size:14px; font-weight:700; margin-top:1px; }
+  .down { color:#E5484D; } .up { color:#3FB27F; } .flat { color:#F5B544; }
+  .mk-deck { font-size:10px; font-weight:600; line-height:1.25; color:#C9CBC9; margin-top:4px; }
+
+  /* cards */
+  .cards { display:grid; grid-template-columns:repeat(5, 1fr); gap:7px; }
+  .card { background:#12151C; border:1px solid #2A2F3A; padding:6px 8px 6px; height:106px; }
+  .card .desk { display:flex; justify-content:space-between; font-size:8.5px; font-weight:700; color:#9BA1AD; }
+  .card .desk .num { color:#F5B544; }
+  .card .strip { margin:3px 0 3px; height:22px; }
+  .card h3 { font-size:12.5px; font-weight:800; line-height:1.16; }
+  .card p { font-size:9.5px; font-weight:600; line-height:1.24; color:#C9CBC9; margin-top:3px; }
+
+  /* also */
+  .also-head { display:flex; justify-content:space-between; align-items:baseline; border-bottom:1px solid #2A2F3A; padding-bottom:3px; }
+  .also-title { font-size:11px; font-weight:700; color:#E9E6DC; }
+  .also-title b { color:#E5484D; }
+  .also-sub { font-size:9px; font-weight:700; color:#9BA1AD; }
+  .also { display:grid; grid-template-columns:1fr 1fr; column-gap:22px; margin-top:4px; }
+  .aline { display:flex; justify-content:space-between; align-items:baseline; font-size:10px; font-weight:600;
+           line-height:1.26; white-space:nowrap; }
+  .aline .no { font-family:'DejaVu Sans Mono', monospace; color:#F5B544; font-size:9px; margin-right:6px; }
+  .aline .tx b { font-weight:800; color:#FFFFFF; }
+  .aline .rg { font-family:'DejaVu Sans Mono', monospace; font-size:8.5px; color:#9BA1AD; margin-left:8px; }
+
+  /* numbers */
+  .numbers { display:flex; gap:8px; }
+  .num { flex:1; background:#171B24; border:1px solid #2A2F3A; border-top:3px solid #F5B544; padding:5px 10px 5px; }
+  .num .big { font-family:'DejaVu Sans Mono', monospace; font-size:22px; font-weight:700; color:#F5B544; }
+  .num .cap { font-size:8.5px; font-weight:700; color:#9BA1AD; margin-top:2px; line-height:1.3; }
+
+  /* date check + footer */
+  .datecheck { border:1px solid #F5B544; color:#F5B544; font-size:9px; font-weight:700; padding:4px 9px; white-space:nowrap; }
+  .datecheck b { color:#E9E6DC; }
+  .footer { display:flex; justify-content:space-between; font-size:9px; font-weight:700; color:#9BA1AD; }
+</style>
+</head>
+<body>
+
+  <!-- 1 · TICKER -->
+  <div class="ticker mono chk">
+    <div><span class="dot">●</span>&nbsp; WIRE DESK · 35 STORIES · 8 REGIONS · ALL TIMES UTC</div>
+    <div class="r">ONE DAY · ONE IMAGE</div>
+  </div>
+
+  <!-- 2 · MASTHEAD -->
+  <div class="masthead">
+    <div class="brandrow">
+      <div class="date chk">MONDAY 23 NOVEMBER <span class="amp">2026</span></div>
+    </div>
+    <div class="rule"></div>
+    <div class="strap mono chk">COP31 ENDS WITH NO DEAL · DEMOCRATS TAKE THE HOUSE · KYIV CONFIRMS BENGHAZI STRIKE</div>
+  </div>
+
+  <!-- 3 · ALERT STRIP -->
+  <div class="alerts mono">
+    <div class="alert chk">HORMUZ — <b>31 ATTACKS LOGGED</b></div>
+    <div class="alert chk">KYIV REGION — <b>15 KILLED</b></div>
+    <div class="alert chk">ANTALYA — <b>NO DEAL, 48 HRS OVER</b></div>
+    <div class="alert chk">SEOUL — <b>KOSPI OPENS −3.0%</b></div>
+  </div>
+
+  <!-- 4 · LEADS -->
+  <div class="leads">
+    <div class="lead1">
+      <div class="kick mono"><span class="n">1</span>CLIMATE · ANTALYA, TÜRKIYE — LEAD STORY</div>
+      <div class="h1 chk">COP31 TALKS END WITH NO DEAL AFTER 48 HOURS OVERTIME</div>
+      <div class="deck chk">The longest UN climate summit on record closes with no cover decision: the EU and allies reject a Turkish-Australian draft that dropped explicit fossil-fuel phase-out language, oil producers hold out, and Pacific island nations voice despair as the blame game opens.</div>
+      <div class="art1">
+        <svg width="574" height="112" viewBox="0 0 574 118" preserveAspectRatio="xMidYMid meet">
+          <rect x="0" y="0" width="574" height="118" fill="#171B24"/>
+          <!-- factory stacks left -->
+          <rect x="18" y="52" width="10" height="52" fill="#3A4152"/><rect x="36" y="44" width="10" height="60" fill="#3A4152"/>
+          <path d="M14 44 q8 -12 18 -4 q12 -10 20 0 q-18 6 -38 4" fill="#E5484D" opacity="0.55"/>
+          <path d="M30 34 q8 -10 16 -3 q10 -8 17 1 q-15 5 -33 2" fill="#E5484D" opacity="0.35"/>
+          <!-- turbines right -->
+          <g stroke="#3FB27F" stroke-width="2.4" fill="none" opacity="0.8">
+            <line x1="520" y1="104" x2="520" y2="58"/><line x1="520" y1="58" x2="520" y2="34"/><line x1="520" y1="58" x2="498" y2="70"/><line x1="520" y1="58" x2="542" y2="70"/>
+            <line x1="472" y1="104" x2="472" y2="66"/><line x1="472" y1="66" x2="472" y2="46"/><line x1="472" y1="66" x2="455" y2="76"/><line x1="472" y1="66" x2="489" y2="76"/>
+          </g>
+          <!-- dome -->
+          <path d="M187 62 a100 44 0 0 1 200 0 Z" fill="#232936"/>
+          <rect x="182" y="62" width="210" height="4" fill="#2A2F3A"/>
+          <line x1="287" y1="8" x2="287" y2="18" stroke="#F5B544" stroke-width="2"/>
+          <circle cx="287" cy="7" r="3" fill="#F5B544"/>
+          <!-- table arc -->
+          <path d="M157 104 a130 26 0 0 1 260 0" stroke="#9BA1AD" stroke-width="5" fill="none"/>
+          <g fill="#9BA1AD"><circle cx="180" cy="90" r="3.4"/><circle cx="215" cy="81" r="3.4"/><circle cx="252" cy="77" r="3.4"/><circle cx="322" cy="77" r="3.4"/><circle cx="359" cy="81" r="3.4"/><circle cx="394" cy="90" r="3.4"/></g>
+          <!-- draft document with red X -->
+          <g transform="rotate(-7 287 84)">
+            <rect x="266" y="66" width="42" height="34" fill="#E9E6DC"/>
+            <line x1="272" y1="74" x2="302" y2="74" stroke="#0A0C10" stroke-width="2"/>
+            <line x1="272" y1="81" x2="302" y2="81" stroke="#0A0C10" stroke-width="2"/>
+            <line x1="272" y1="88" x2="292" y2="88" stroke="#0A0C10" stroke-width="2"/>
+            <line x1="270" y1="68" x2="304" y2="98" stroke="#E5484D" stroke-width="4"/>
+            <line x1="304" y1="68" x2="270" y2="98" stroke="#E5484D" stroke-width="4"/>
+          </g>
+        </svg>
+      </div>
+      <div class="tag mono">CONFIRMED · REUTERS / UN NEWS</div>
+    </div>
+    <div class="lead2col">
+      <div class="leadsmall">
+        <div class="kick mono"><span class="n">2</span>WAR · KYIV REGION, UKRAINE</div>
+        <div class="h2 chk">KYIV REGION STRIKES KILL 15</div>
+        <div class="deck2 chk">Russian bombardment flattens a Dymer apartment block; rescuers dig through rubble as the toll reaches at least 15 dead.</div>
+        <div class="artstrip">
+          <svg width="330" height="30" viewBox="0 0 330 40" preserveAspectRatio="xMidYMid meet">
+            <rect x="0" y="0" width="330" height="40" fill="#171B24"/>
+            <g fill="#3A4152"><rect x="14" y="16" width="34" height="20"/><rect x="54" y="22" width="26" height="14"/><rect x="86" y="26" width="30" height="10"/></g>
+            <path d="M120 36 l14 -18 l6 8 l12 -14 l8 10 l10 -8 l6 22 Z" fill="#2A2F3A"/>
+            <path d="M196 36 q4 -14 12 -16 q-2 8 4 10 q8 -12 14 -12 q-4 10 2 18 Z" fill="#E5484D"/>
+            <path d="M204 36 q3 -8 7 -9 q0 5 3 6 q4 -6 8 -6 q-2 5 1 9 Z" fill="#F5B544"/>
+            <g stroke="#9BA1AD" stroke-width="2"><line x1="252" y1="36" x2="262" y2="18"/><line x1="262" y1="18" x2="276" y2="18"/></g>
+            <rect x="282" y="28" width="34" height="8" fill="#3A4152"/>
+          </svg>
+        </div>
+        <div class="tag mono">CONFIRMED · UKRAINIAN OFFICIALS / REUTERS</div>
+      </div>
+      <div class="leadsmall">
+        <div class="kick amber mono"><span class="n">3</span>AMERICAS · WASHINGTON, D.C.</div>
+        <div class="h2 chk">DEMOCRATS TAKE HOUSE: 258+ SEATS</div>
+        <div class="deck2 chk">A North Carolina call locks the largest Democratic House majority of the century: 40+ flips, a 14-point margin.</div>
+        <div class="artstrip">
+          <svg width="330" height="30" viewBox="0 0 330 40" preserveAspectRatio="xMidYMid meet">
+            <rect x="0" y="0" width="330" height="40" fill="#171B24"/>
+            <path d="M120 6 L210 6 L165 16 Z" fill="#F5B544"/>
+            <g fill="#9BA1AD"><rect x="126" y="18" width="7" height="14"/><rect x="144" y="18" width="7" height="14"/><rect x="162" y="18" width="7" height="14"/><rect x="180" y="18" width="7" height="14"/><rect x="198" y="18" width="7" height="14"/></g>
+            <rect x="118" y="33" width="94" height="4" fill="#9BA1AD"/>
+            <text x="238" y="30" font-family="DejaVu Sans Mono" font-size="17" font-weight="700" fill="#F5B544">258+</text>
+          </svg>
+        </div>
+        <div class="tag mono">CONFIRMED · AP / RUSSELL RECORD</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5 · MARKETS -->
+  <div class="markets">
+    <div class="mk-head">
+      <div class="mk-title chk">AI SELL-OFF SLAMS ASIA; <span>WALL ST BRACES</span></div>
+      <div class="mk-note mono">MARKETS DESK · STORY 7</div>
+    </div>
+    <div class="mk-table mono">
+      <div class="mk"><div class="sym">KOSPI OPEN</div><div class="val down">−3.0%</div></div>
+      <div class="mk"><div class="sym">SAMSUNG</div><div class="val down">−3.3%</div></div>
+      <div class="mk"><div class="sym">SK HYNIX</div><div class="val down">−2.7%</div></div>
+      <div class="mk"><div class="sym">NASDAQ FUT</div><div class="val up">+3%</div></div>
+      <div class="mk"><div class="sym">GOLD</div><div class="val up">+2.0%</div></div>
+      <div class="mk"><div class="sym">USD/JPY</div><div class="val flat">~159</div></div>
+      <div class="mk"><div class="sym">EURO INFLATION</div><div class="val flat">4.0%</div></div>
+    </div>
+    <div class="mk-deck chk">Seoul slides after Friday's 5% drop while US futures bounce into a holiday-shortened week; Trump says he secured the Nvidia board's reinstatement of Jensen Huang as CEO.</div>
+  </div>
+
+  <!-- 6 · CARDS 4–13 -->
+  <div class="cards">
+    <div class="card">
+      <div class="desk mono"><span><span class="num">4</span> · WAR</span><span>CONFIRMED</span></div>
+      <svg class="strip" width="172" height="26" viewBox="0 0 172 26"><rect width="172" height="26" fill="#171B24"/><path d="M20 20 l60 -3 l-6 6 l-48 0 Z" fill="#3A4152"/><rect x="44" y="12" width="12" height="6" fill="#3A4152"/><path d="M96 8 l16 4 l-16 4 Z" fill="#E5484D"/><path d="M128 18 q10 -8 20 0 q-10 4 -20 0" fill="#3FB27F"/></svg>
+      <h3 class="chk">UKRAINE SINKS CORVETTE</h3>
+      <p class="chk">Seven drones hit corvette Merkury at Benghazi; another strikes a Russian ship in the Gulf of Finland.</p>
+    </div>
+    <div class="card">
+      <div class="desk mono"><span><span class="num">5</span> · MIDEAST</span><span>REPORTED</span></div>
+      <svg class="strip" width="172" height="26" viewBox="0 0 172 26"><rect width="172" height="26" fill="#171B24"/><path d="M0 20 q22 -10 43 0 q22 10 43 0 q22 -10 43 0 q22 10 43 0" stroke="#3FB27F" stroke-width="2.4" fill="none"/><path d="M76 4 l14 12 l-14 0 Z" fill="#E5484D"/><rect x="70" y="14" width="20" height="4" fill="#E5484D"/></svg>
+      <h3 class="chk">TRUMP WARNS IRAN</h3>
+      <p class="chk">Trump signals a post-New Year strike on Iran; UKMTO logs 31 strait attacks, Treasury hits shadow banks.</p>
+    </div>
+    <div class="card">
+      <div class="desk mono"><span><span class="num">6</span> · EUROPE</span><span>CONFIRMED</span></div>
+      <svg class="strip" width="172" height="26" viewBox="0 0 172 26"><rect width="172" height="26" fill="#171B24"/><ellipse cx="86" cy="13" rx="34" ry="7" fill="#3A4152"/><rect x="78" y="6" width="16" height="6" fill="#3A4152"/><circle cx="60" cy="13" r="3" fill="#F5B544"/><circle cx="112" cy="13" r="3" fill="#F5B544"/></svg>
+      <h3 class="chk">NATO AWACS TO POLAND</h3>
+      <p class="chk">An early-warning jet deploys after three Russian Kh-101 missiles landed in Poland on Friday, Warsaw says.</p>
+    </div>
+    <div class="card">
+      <div class="desk mono"><span><span class="num">7</span> · MARKETS</span><span>CONFIRMED</span></div>
+      <svg class="strip" width="172" height="26" viewBox="0 0 172 26"><rect width="172" height="26" fill="#171B24"/><path d="M14 6 l34 6 l30 -3 l34 8 l40 -4" stroke="#E5484D" stroke-width="2.4" fill="none"/><path d="M146 9 l8 6 l-11 1 Z" fill="#E5484D"/></svg>
+      <h3 class="chk">AI SELL-OFF SLAMS ASIA</h3>
+      <p class="chk">KOSPI opens −3.0% after Friday's 5% slide; Nasdaq futures jump ~3% into a holiday-shortened week.</p>
+    </div>
+    <div class="card">
+      <div class="desk mono"><span><span class="num">8</span> · ASIA</span><span>CONFIRMED</span></div>
+      <svg class="strip" width="172" height="26" viewBox="0 0 172 26"><rect width="172" height="26" fill="#171B24"/><path d="M30 20 L66 6 L86 20 Z" fill="#3A4152"/><path d="M86 20 L106 6 L142 20 Z" fill="#232936"/><circle cx="86" cy="20" r="3.4" fill="#F5B544"/></svg>
+      <h3 class="chk">INDIA–NEPAL VISION PACT</h3>
+      <p class="chk">Modi unveils an NPR 24,000 crore package as Delhi and Kathmandu sign a long-term partnership.</p>
+    </div>
+    <div class="card">
+      <div class="desk mono"><span><span class="num">9</span> · ASIA</span><span>REPORTED</span></div>
+      <svg class="strip" width="172" height="26" viewBox="0 0 172 26"><rect width="172" height="26" fill="#171B24"/><rect x="52" y="12" width="68" height="12" fill="#3A4152"/><path d="M66 12 q2 -8 8 -9 q-1 5 3 6 q3 -7 8 -7 q-2 6 1 10 Z" fill="#E5484D"/><path d="M92 12 q2 -6 6 -7 q0 4 2 5 q3 -5 6 -5 q-1 4 1 7 Z" fill="#F5B544"/></svg>
+      <h3 class="chk">JAVA FIRE KILLS 24</h3>
+      <p class="chk">A blaze at a Serang sweets factory kills at least 24; some 30 people are still missing, officials say.</p>
+    </div>
+    <div class="card">
+      <div class="desk mono"><span><span class="num">10</span> · SPORT</span><span>CONFIRMED</span></div>
+      <svg class="strip" width="172" height="26" viewBox="0 0 172 26"><rect width="172" height="26" fill="#171B24"/><path d="M70 4 h32 v6 h-32 Z" fill="#F5B544"/><path d="M82 10 h8 v6 h-8 Z" fill="#F5B544"/><path d="M66 22 h40 l-4 -6 h-32 Z" fill="#F5B544"/></svg>
+      <h3 class="chk">2035 WOMEN'S CUP: UK</h3>
+      <p class="chk">FIFA Congress approves the four-nation UK bid: 48 teams, 104 matches; the US-led bid takes 2031.</p>
+    </div>
+    <div class="card">
+      <div class="desk mono"><span><span class="num">11</span> · SCIENCE</span><span>CONFIRMED</span></div>
+      <svg class="strip" width="172" height="26" viewBox="0 0 172 26"><rect width="172" height="26" fill="#171B24"/><circle cx="112" cy="13" r="9" fill="#F5B544"/><circle cx="108" cy="10" r="2.4" fill="#0A0C10" opacity="0.35"/><circle cx="40" cy="13" r="4" fill="#9BA1AD"/><path d="M44 13 a62 62 0 0 1 58 0" stroke="#3FB27F" stroke-width="1.8" fill="none" stroke-dasharray="4 3"/></svg>
+      <h3 class="chk">BEPICOLOMBO MERCURY</h3>
+      <p class="chk">ESA/JAXA's pair slips into Mercury orbit after an eight-year cruise.</p>
+    </div>
+    <div class="card">
+      <div class="desk mono"><span><span class="num">12</span> · SPORT</span><span>CONFIRMED</span></div>
+      <svg class="strip" width="172" height="26" viewBox="0 0 172 26"><rect width="172" height="26" fill="#171B24"/><rect x="118" y="4" width="4" height="18" fill="#9BA1AD"/><rect x="128" y="4" width="4" height="18" fill="#9BA1AD"/><rect x="116" y="4" width="18" height="3" fill="#9BA1AD"/><path d="M30 20 L66 6 l3 5 L36 23 Z" fill="#F5B544"/><circle cx="86" cy="17" r="4" fill="#E5484D"/></svg>
+      <h3 class="chk">NZ ESCAPE WITH DRAW</h3>
+      <p class="chk">Mitchell and Phillips bat out 43 overs at 239/5 to deny India; Gill cites bowler fatigue.</p>
+    </div>
+    <div class="card">
+      <div class="desk mono"><span><span class="num">13</span> · AFRICA</span><span>REPORTED</span></div>
+      <svg class="strip" width="172" height="26" viewBox="0 0 172 26"><rect width="172" height="26" fill="#171B24"/><rect x="30" y="12" width="30" height="12" fill="#3A4152"/><rect x="112" y="8" width="30" height="16" fill="#232936"/><path d="M76 4 l10 8 l-10 0 Z" fill="#E5484D"/><circle cx="127" cy="16" r="3" fill="#F5B544"/></svg>
+      <h3 class="chk">DRONES HIT KHARTOUM</h3>
+      <p class="chk">Drone strikes hit homes and a UN building in Sudan's capital, Khartoum.</p>
+    </div>
+  </div>
+
+  <!-- 7 · ALSO ON THE WIRE -->
+  <div>
+    <div class="also-head">
+      <div class="also-title mono"><b>■</b> ALSO ON THE WIRE · STORIES 14–35</div>
+      <div class="also-sub mono">EUROPE 4 · AMERICAS 6 · MIDEAST 2 · ASIA 1 · PACIFIC 1 · AFRICA 1 · WORLD 2 · SPORT 3 · SCIENCE 2</div>
+    </div>
+    <div class="also">
+      <div class="aline chk"><span class="tx"><span class="no">14</span><b>EURO INFLATION 4.0%</b> — Eurostat's euro-area reading</span><span class="rg">EUROPE</span></div>
+      <div class="aline chk"><span class="tx"><span class="no">15</span><b>EU'S 22ND RUSSIA PACKAGE</b> — banks, crypto, sport</span><span class="rg">EUROPE</span></div>
+      <div class="aline chk"><span class="tx"><span class="no">16</span><b>VANUATU ASH EVACUATIONS</b> — clearances expand</span><span class="rg">PACIFIC</span></div>
+      <div class="aline chk"><span class="tx"><span class="no">17</span><b>EL CHAPO ISIDRO HELD</b> — captured in Guasave, Sinaloa</span><span class="rg">AMERICAS</span></div>
+      <div class="aline chk"><span class="tx"><span class="no">18</span><b>CÚCUTA DRONE ATTACK</b> — 3 hurt, 60 homes damaged</span><span class="rg">AMERICAS</span></div>
+      <div class="aline chk"><span class="tx"><span class="no">19</span><b>FBI PROBES NCIC HACK</b> — crime database breached</span><span class="rg">AMERICAS</span></div>
+      <div class="aline chk"><span class="tx"><span class="no">20</span><b>EBOLA RESPONSE DISRUPTED</b> — Ituri medics shelter 24+ hrs</span><span class="rg">AFRICA</span></div>
+      <div class="aline chk"><span class="tx"><span class="no">21</span><b>WEST BANK ATTACKS DENOUNCED</b> — Eisenkot speaks out</span><span class="rg">MIDEAST</span></div>
+      <div class="aline chk"><span class="tx"><span class="no">22</span><b>SINGER FLOGGED IN IRAN</b> — 74 lashes each for five</span><span class="rg">MIDEAST</span></div>
+      <div class="aline chk"><span class="tx"><span class="no">23</span><b>GERMANY TAPS KYIV'S DELTA</b> — battle-system deal</span><span class="rg">EUROPE</span></div>
+      <div class="aline chk"><span class="tx"><span class="no">24</span><b>MURMANSK GOVERNOR HELD</b> — embezzlement suspicion</span><span class="rg">EUROPE</span></div>
+      <div class="aline chk"><span class="tx"><span class="no">25</span><b>LEAD AZIDE PAUSED</b> — Iowa stockpile blasts halted</span><span class="rg">AMERICAS</span></div>
+      <div class="aline chk"><span class="tx"><span class="no">26</span><b>MEGASPEED BLACKLISTED</b> — US bars AI-chip firm</span><span class="rg">ASIA</span></div>
+      <div class="aline chk"><span class="tx"><span class="no">27</span><b>GUTERRES ON AI</b> — urges tighter rules in Barbados</span><span class="rg">WORLD</span></div>
+      <div class="aline chk"><span class="tx"><span class="no">28</span><b>UK STATEMENT ON MYANMAR</b> — Miliband to Commons</span><span class="rg">WORLD</span></div>
+      <div class="aline chk"><span class="tx"><span class="no">29</span><b>SKUBAL'S $450M</b> — record nine-year Mets pitcher deal</span><span class="rg">SPORT</span></div>
+      <div class="aline chk"><span class="tx"><span class="no">30</span><b>HEAT STREAK AT SEVEN</b> — Adebayo triple-double, 123–113</span><span class="rg">SPORT</span></div>
+      <div class="aline chk"><span class="tx"><span class="no">31</span><b>INDIA'S 100TH GRANDMASTER</b> — Shrivatri in Ozamiz</span><span class="rg">SPORT</span></div>
+      <div class="aline chk"><span class="tx"><span class="no">32</span><b>GOMEZ TO RESIGN</b> — quits Congress 1 Dec, ethics report</span><span class="rg">AMERICAS</span></div>
+      <div class="aline chk"><span class="tx"><span class="no">33</span><b>GLYPHOSATE QUESTIONS</b> — preprints cite cancer risk</span><span class="rg">SCIENCE</span></div>
+      <div class="aline chk"><span class="tx"><span class="no">34</span><b>NHS AI CANCER TRIAL</b> — breast-screening study opens</span><span class="rg">SCIENCE</span></div>
+      <div class="aline chk"><span class="tx"><span class="no">35</span><b>TOM JACKSON, 75</b> — Broncos great, ESPN analyst, dies</span><span class="rg">AMERICAS</span></div>
+    </div>
+  </div>
+
+  <!-- 8 · NUMBERS -->
+  <div class="numbers">
+    <div class="num"><div class="big">48 HRS</div><div class="cap mono">COP31 OVERTIME — NO DEAL REACHED</div></div>
+    <div class="num"><div class="big">258+</div><div class="cap mono">HOUSE SEATS WON BY DEMOCRATS</div></div>
+    <div class="num"><div class="big">31</div><div class="cap mono">ATTACKS LOGGED AROUND HORMUZ</div></div>
+    <div class="num"><div class="big">$450M</div><div class="cap mono">SKUBAL — LARGEST PITCHER DEAL</div></div>
+  </div>
+
+  <!-- 9 · DATE CHECK -->
+  <div class="datecheck mono chk"><b>DATE CHECK — NOT 23 NOV:</b> ATP FINALS TITLE (SUN) · ULLEUNG WARNING (TUE) · HORMUZ TANKER-MINE REPORTS (TUE) · BAYELSA BOAT (FRI) · RIEMANN CLAIM (SUN)</div>
+
+  <!-- 10 · FOOTER -->
+  <div class="footer mono">
+    <div>SOURCES: REUTERS · AP · AFP · UN NEWS · IANS · EUROSTAT · UKMTO · PRINCIPIA</div>
+    <div>FILED MON 23 NOV 2026</div>
+  </div>
+
+</body>
+</html>
